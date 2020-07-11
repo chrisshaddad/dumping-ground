@@ -1,4 +1,4 @@
-###Starting the app
+Starting the app:
 1. `node index.js` in /Server
 2. `npm start` in /Portal
 
