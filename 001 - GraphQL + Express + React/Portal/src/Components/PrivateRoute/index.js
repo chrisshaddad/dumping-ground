@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { Constants } from "../../Utils";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   //Can be replaced with prefered auth checking method
@@ -20,7 +20,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 };
 
 PrivateRoute.propTypes = {
-    component: PropTypes.element
-}
+  component: PropTypes.element,
+};
 
-export default PrivateRoute
+export default PrivateRoute;
