@@ -3,6 +3,10 @@ export default {
         IS_AUTHENTICATED: "isAuthenticated"
     },
     apiLinks: {
-        graphQLServerLink: process.env.REACT_APP_GRAPHQL_SERVER_PORT
+        graphQLServerLink: process.env.REACT_APP_EXPRESS_SERVER_PORT,
+    },
+    themes: {
+        light: "light",
+        dark: "dark"
     }
 }
