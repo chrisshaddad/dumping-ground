@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useContext, useState } from "react";
 import GlobalContext from "../../Contexts/GlobalContext";
+import { useHistory } from 'react-router-dom';
 import { Constants } from "../../Utils";
 import {
   Grid,
@@ -11,6 +12,9 @@ import {
   IconButton,
   Tooltip,
   Snackbar,
+  Menu,
+  MenuItem,
+  CircularProgress
 } from "@material-ui/core";
 import { LockOutlined, ReportProblemOutlined } from "@material-ui/icons";
 import { lime } from "@material-ui/core/colors";
@@ -20,6 +24,7 @@ import Alert from "@material-ui/lab/Alert";
 import API from "../../Utils/Network";
 
 import styles from "./styles.module.css";
+import { object } from "prop-types";
 
 //Using multiple implementation of styles just for showcasing :)
 //Focusing on makeStyles as it is the main method of styling for material ui
@@ -39,17 +44,53 @@ const useStyles = makeStyles((theme) => ({
 
 function LoginPage() {
   const globalContext = useContext(GlobalContext);
+  const history = useHistory();
   useEffect(() => {
     if (globalContext.currentPage.get !== Constants.pageTags.LOGIN_PAGE)
       globalContext.currentPage.set(Constants.pageTags.LOGIN_PAGE);
   });
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [loginError, setLoginError] = useState(false);
+  const [formData, setFormData] = useState({});
+  const [loaderMenuAnchor, setLoaderMenuAnchor] = useState(null);
+  const [isLoadingLocally, setIsLoadingLocally] = useState(false);
 
   const classes = useStyles();
 
   const handleSignInClick = (event) => {
-    
+    if (
+      formData.username.toLowerCase() !== "admin" ||
+      formData.password.toLowerCase() !== "admin"
+    ) {
+      setLoginError(true);
+      setSnackbarOpen(true);
+    } else setLoaderMenuAnchor(event.currentTarget)
+  };
+
+  const handleLoaderSelection=(loaderType)=>{
+    if(loaderType === "fullscreen")
+      globalContext.showLoadingOverlay.set(true)
+    else setIsLoadingLocally(true)
+    setLoaderMenuAnchor(null)
+    triggerLogin()
+  }
+
+  const triggerLogin = () => {
+      API.login(formData.username, formData.password)
+      .then(result => {
+        globalContext.showLoadingOverlay.set(false)
+        localStorage.setItem(Constants.localStorageVars.IS_AUTHENTICATED, true)
+        document.body.className = "hide-background-image"
+        history.push("/dashboard")
+      })
+  }
+
+  const handleFormDataChange = (value, field) => {
+    setLoginError(false);
+    let newFormData = Object.assign({}, formData);
+    newFormData[field] = value;
+    setFormData(newFormData);
   };
 
   return (
@@ -78,13 +119,28 @@ function LoginPage() {
                 </Grid>
                 <form className={styles.loginForm}>
                   <Grid item xs={12} className={classes.gridSpacing}>
-                    <CustomTextField label="Username" variant="outlined" />
+                    <CustomTextField
+                      label="Username"
+                      variant="outlined"
+                      error={loginError}
+                      value={formData.username}
+                      onChange={(event) =>
+                        handleFormDataChange(event.target.value, "username")
+                      }
+                      disabled={isLoadingLocally}
+                    />
                   </Grid>
                   <Grid item xs={12} className={classes.gridSpacing}>
                     <CustomTextField
                       label="Password"
                       type="password"
                       variant="outlined"
+                      error={loginError}
+                      value={formData.password}
+                      onChange={(event) =>
+                        handleFormDataChange(event.target.value, "password")
+                      }
+                      disabled={isLoadingLocally}
                     />
                   </Grid>
                   <Grid item xs={12} className={styles.loginButtonContainer}>
@@ -92,7 +148,7 @@ function LoginPage() {
                       title={
                         <Fragment>
                           <span>
-                            Use Admin as username and password to sign in
+                            Use "admin" as username and password to sign in
                           </span>
                           <br />
                           <br />
@@ -108,10 +164,11 @@ function LoginPage() {
                     </Tooltip>
                     <Button
                       color="primary"
-                      variant="contained"
+                      variant={isLoadingLocally ? "text" : "contained"}
                       onClick={(event) => handleSignInClick(event)}
+                      disabled={isLoadingLocally}
                     >
-                      Sign In
+                      {isLoadingLocally ? <CircularProgress size={25} /> : "Sign In"}
                     </Button>
                   </Grid>
                 </form>
@@ -130,6 +187,15 @@ function LoginPage() {
           Invalid Credentials!
         </Alert>
       </Snackbar>
+
+      <Menu anchorEl={loaderMenuAnchor} open={Boolean(loaderMenuAnchor)} onClose={()=>setLoaderMenuAnchor(null)}>
+        <MenuItem onClick={() => handleLoaderSelection("fullscreen")}>
+                      Fullscreen Loader
+        </MenuItem>
+        <MenuItem onClick={() => handleLoaderSelection("local")}>
+        Local Loader
+        </MenuItem>
+      </Menu>
     </Fragment>
   );
 }

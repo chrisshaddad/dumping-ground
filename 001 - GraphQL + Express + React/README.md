@@ -16,3 +16,6 @@
 - Add SideBar
 - Add theme switcher in app bar
 - Design single user page
+- Add logout to topbar that returns the user to login pagw
+
+BONUS POINTS: Apply graphql server

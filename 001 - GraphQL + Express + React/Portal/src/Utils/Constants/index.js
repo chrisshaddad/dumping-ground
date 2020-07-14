@@ -3,7 +3,7 @@ export default {
     IS_AUTHENTICATED: "isAuthenticated",
   },
   apiLinks: {
-    GRAPHQL_SERVER_LINK: process.env.REACT_APP_EXPRESS_SERVER_PORT,
+    GRAPHQL_SERVER_LINK: `http://localhost:${process.env.REACT_APP_EXPRESS_SERVER_PORT}`,
   },
   themes: {
     LIGHT: "light",
