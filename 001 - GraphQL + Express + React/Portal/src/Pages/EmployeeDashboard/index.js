@@ -1,5 +1,5 @@
 import React, { Fragment, useContext, useEffect } from "react"
-import { GlobalContext } from "../../App";
+import GlobalContext from "../../Contexts/GlobalContext"
 import { Constants } from "../../Utils"
 
 function EmployeeDashboard(){

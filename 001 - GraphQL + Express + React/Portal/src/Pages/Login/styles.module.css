@@ -7,7 +7,7 @@
 }
 
 .loginDialog {
-    padding: 4px;
+    padding: 15px 10px;
     width: 100%;
 }
 
@@ -18,3 +18,4 @@
 .loginButtonContainer{
     text-align: right;
 }
+

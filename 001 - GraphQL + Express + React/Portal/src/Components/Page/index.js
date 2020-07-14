@@ -1,5 +1,5 @@
 import React, { Fragment, useContext } from "react";
-import { GlobalContext } from "../../App";
+import GlobalContext from "../../Contexts/GlobalContext"
 import { Switch, Route, Redirect } from "react-router-dom";
 import TopBar from "./TopBar";
 import SideMenu from "./SideMenu";

@@ -6,8 +6,7 @@ import { Themes, Constants } from "./Utils";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { CssBaseline, Backdrop, CircularProgress } from "@material-ui/core";
 import { BrowserRouter } from "react-router-dom";
-
-export const GlobalContext = React.createContext({});
+import GlobalContext from "./Contexts/GlobalContext";
 
 function App() {
   //Automatically sets dark mode in case user set it as preferred

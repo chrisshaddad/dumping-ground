@@ -9,3 +9,7 @@ body {
     ),
     url("/images/background.jpg");
 }
+
+.text-align-center{
+  text-align: center;
+}
