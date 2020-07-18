@@ -4,15 +4,14 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 app.use(cors());
+app.use(express.json());
 const port = process.env.PORT;
 
-app.get("/", (req, res) =>
-  res.send("Soon to be graphql server, also used for mock login")
-);
-
 app.post("/users/login", (req, res) => {
-  //should handle loging in here
+  //should handle logging in here
   console.log("Pretending to login...");
+  console.log("username: " + req.body.username);
+  console.log("password: " + req.body.password);
   setTimeout(() => {
     res.send({
       success: true,

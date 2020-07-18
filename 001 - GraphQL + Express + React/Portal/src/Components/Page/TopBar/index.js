@@ -9,17 +9,13 @@ import {
 } from "@material-ui/core";
 import GlobalContext from "../../../Contexts/GlobalContext";
 import { Constants } from "../../../Utils";
-import {
-  IconButton,
-  makeStyles,
-  Button,
-  Badge,
-} from "@material-ui/core";
+import { IconButton, makeStyles, Button, Badge } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { Menu as MenuIcon, Notifications } from "@material-ui/icons";
 import API from "../../../Utils/Network";
 import red from "@material-ui/core/colors/red";
 import green from "@material-ui/core/colors/green";
+import SideMenu from "../SideMenu";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -45,9 +41,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
   },
-  notificationsMenu:{
-    height: "100%"
-  }
+  notificationsMenu: {
+    height: "100%",
+  },
 }));
 
 const notificationTypeStyleMapping = {
@@ -63,6 +59,7 @@ function TopBar() {
   const [notificationsLoading, setNotificationsLoading] = useState(true);
   const [notifications, setNotifications] = useState([]);
   const [notificationsMenuAnchor, setNotificationsMenuOpen] = useState(null);
+  const [sideMenuOpen, setSideMenuOpen] = useState(false);
 
   const fetchNotifications = () => {
     setNotificationsLoading(true);
@@ -87,8 +84,8 @@ function TopBar() {
   };
 
   const handleSelectNotification = (n) => {
-    notificationsMenuAnchor(null)
-  }
+    notificationsMenuAnchor(null);
+  };
 
   return (
     <Fragment>
@@ -101,7 +98,7 @@ function TopBar() {
         }
       >
         <Toolbar>
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={() => setSideMenuOpen(true)}>
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
@@ -132,16 +129,17 @@ function TopBar() {
           className: classes.notificationsPaper,
         }}
         MenuListProps={{
-          className:classes.notificationsMenu
+          className: classes.notificationsMenu,
         }}
       >
         {notificationsLoading ? (
           <MenuItem className={classes.notificationLoader} disabled>
-            <CircularProgress size={30}  />
+            <CircularProgress size={30} />
           </MenuItem>
         ) : (
           notifications.map((n) => (
             <MenuItem
+              key={`notification_${n.id}`}
               className={`${classes.notification} ${
                 classes[notificationTypeStyleMapping[n.type]]
               }`}
@@ -152,6 +150,8 @@ function TopBar() {
           ))
         )}
       </Menu>
+
+      <SideMenu open={sideMenuOpen} onClose={() => setSideMenuOpen(false)} />
     </Fragment>
   );
 }

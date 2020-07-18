@@ -9,8 +9,11 @@ class API {
     const fullUrl = `${Constants.apiLinks.GRAPHQL_SERVER_LINK}${url}`;
 
     return fetch(fullUrl, {
-      method: "post",
+      method: "POST",
       credentials: "same-origin",
+      headers:{
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify(body),
     }).then((response) => response.json());
   }

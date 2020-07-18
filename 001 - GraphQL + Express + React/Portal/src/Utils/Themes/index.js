@@ -19,6 +19,11 @@ let commonOverrides = {
       root:{
         zIndex: 9999
       }
+    },
+    MuiDrawer: {
+      paper: {
+        zIndex: 10000
+      }
     }
   }
 };
