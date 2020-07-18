@@ -1,4 +1,5 @@
 import Constants from "../Constants";
+import testingData from "./testingData"
 
 const apiLinks = Constants.apiLinks;
 
@@ -21,6 +22,14 @@ class API {
       username,
       password,
     });
+  }
+
+  getNotifications(){
+        return new Promise((resolve, reject) => {
+           setTimeout(() => {
+               return resolve(testingData.getNotificationsResult);
+           }, 3000);
+        })
   }
 }
 

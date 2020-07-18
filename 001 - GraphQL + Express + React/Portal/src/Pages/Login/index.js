@@ -51,6 +51,7 @@ function LoginPage() {
   });
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   const [loginError, setLoginError] = useState(false);
   const [formData, setFormData] = useState({});
   const [loaderMenuAnchor, setLoaderMenuAnchor] = useState(null);
@@ -64,6 +65,7 @@ function LoginPage() {
       formData.password.toLowerCase() !== "admin"
     ) {
       setLoginError(true);
+      setSnackbarMessage("Invalid Credentials!")
       setSnackbarOpen(true);
     } else setLoaderMenuAnchor(event.currentTarget)
   };
@@ -80,9 +82,16 @@ function LoginPage() {
       API.login(formData.username, formData.password)
       .then(result => {
         globalContext.showLoadingOverlay.set(false)
+        setIsLoadingLocally(false)
         localStorage.setItem(Constants.localStorageVars.IS_AUTHENTICATED, true)
         document.body.className = "hide-background-image"
         history.push("/dashboard")
+      })
+      .catch(ex => {
+        setSnackbarMessage("Possible timeout, double check if you started the expess server")
+        setSnackbarOpen(true);
+        globalContext.showLoadingOverlay.set(false)
+        setIsLoadingLocally(false)
       })
   }
 
@@ -184,7 +193,7 @@ function LoginPage() {
         onClose={() => setSnackbarOpen(false)}
       >
         <Alert severity="error" onClose={() => setSnackbarOpen(false)}>
-          Invalid Credentials!
+         {snackbarMessage}
         </Alert>
       </Snackbar>
 

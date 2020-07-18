@@ -7,9 +7,9 @@ import { PrivateRoute } from "../";
 import {
   Login as LoginPage,
   EmployeeDashboard,
-  SingleEmployee as SingleEmployeePage,
 } from "../../Pages";
 import { Constants } from "../../Utils";
+import { Paper } from "@material-ui/core";
 
 function Page(props) {
   const globalContext = useContext(GlobalContext);
@@ -26,9 +26,6 @@ function Page(props) {
         </Route>
         <PrivateRoute exact path="/dashboard">
           <EmployeeDashboard />
-        </PrivateRoute>
-        <PrivateRoute exact path="/employee/:id">
-          <SingleEmployeePage />
         </PrivateRoute>
         <Route exact path="/asd">
           {/*Quick accessing ui features*/}

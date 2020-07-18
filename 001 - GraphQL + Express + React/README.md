@@ -13,6 +13,8 @@
 ## Things left to do:
 - Add paginated table
 - Add feature to switch to lazy loading on table
+- Add actions on table, such edit delete disable
+- Confirmation actions when trying to apply operations on different employees
 - Add SideBar
 - Add theme switcher in app bar
 - Design single user page
