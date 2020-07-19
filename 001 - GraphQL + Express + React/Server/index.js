@@ -40,7 +40,7 @@ app.post("/employees/delete", (req, res) => {
     res.send({
       success: true,
     })
-    console.log("Pretended to add");
+    console.log("Pretended to delete");
   }, 3200);
 });
 
@@ -53,7 +53,7 @@ app.post("/employees/update", (req, res) => {
     res.send({
       success: true,
     })
-    console.log("Pretended to add");
+    console.log("Pretended to update");
   }, 3200);
 });
 

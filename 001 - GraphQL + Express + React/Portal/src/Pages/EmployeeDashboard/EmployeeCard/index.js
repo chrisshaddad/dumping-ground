@@ -10,7 +10,7 @@ import {
   Menu,
   MenuItem,
   Grid,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import PropTypes from "prop-types";
@@ -89,9 +89,9 @@ function EmployeeCard(props) {
             />
             <CardContent>
               <Typography variant="h6">Email</Typography>
-                <Typography variant="body2">{employee.email}</Typography>
+              <Typography variant="body2">{employee.email}</Typography>
               <Typography variant="h6">Phone</Typography>
-                <Typography variant="body2">{employee.phone}</Typography>
+              <Typography variant="body2">{employee.phone}</Typography>
             </CardContent>
           </Fragment>
         )}
@@ -102,14 +102,22 @@ function EmployeeCard(props) {
         open={Boolean(menuAnchor)}
         onClose={() => setMenuAnchor(null)}
       >
-        <MenuItem onClick={() => { 
-            setMenuAnchor(null)
-            onEdit()
-        }}>Edit</MenuItem>
-        <MenuItem onClick={() => {
-            setMenuAnchor(null)
-            onDelete()}
-    }>Delete</MenuItem>
+        <MenuItem
+          onClick={() => {
+            setMenuAnchor(null);
+            onEdit();
+          }}
+        >
+          Edit
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setMenuAnchor(null);
+            onDelete();
+          }}
+        >
+          Delete
+        </MenuItem>
       </Menu>
     </Fragment>
   );

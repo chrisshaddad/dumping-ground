@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useContext, useState } from "react";
 import GlobalContext from "../../Contexts/GlobalContext";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import { Constants } from "../../Utils";
 import {
   Grid,
@@ -14,7 +14,7 @@ import {
   Snackbar,
   Menu,
   MenuItem,
-  CircularProgress
+  CircularProgress,
 } from "@material-ui/core";
 import { LockOutlined, ReportProblemOutlined } from "@material-ui/icons";
 import { lime } from "@material-ui/core/colors";
@@ -65,35 +65,36 @@ function LoginPage() {
       formData.password.toLowerCase() !== "admin"
     ) {
       setLoginError(true);
-      setSnackbarMessage("Invalid Credentials!")
+      setSnackbarMessage("Invalid Credentials!");
       setSnackbarOpen(true);
-    } else setLoaderMenuAnchor(event.currentTarget)
+    } else setLoaderMenuAnchor(event.currentTarget);
   };
 
-  const handleLoaderSelection=(loaderType)=>{
-    if(loaderType === "fullscreen")
-      globalContext.showLoadingOverlay.set(true)
-    else setIsLoadingLocally(true)
-    setLoaderMenuAnchor(null)
-    triggerLogin()
-  }
+  const handleLoaderSelection = (loaderType) => {
+    if (loaderType === "fullscreen") globalContext.showLoadingOverlay.set(true);
+    else setIsLoadingLocally(true);
+    setLoaderMenuAnchor(null);
+    triggerLogin();
+  };
 
   const triggerLogin = () => {
-      API.login(formData.username, formData.password)
-      .then(result => {
-        globalContext.showLoadingOverlay.set(false)
-        setIsLoadingLocally(false)
-        localStorage.setItem(Constants.localStorageVars.IS_AUTHENTICATED, true)
-        document.body.className = "hide-background-image"
-        history.push("/dashboard")
+    API.login(formData.username, formData.password)
+      .then((result) => {
+        globalContext.showLoadingOverlay.set(false);
+        setIsLoadingLocally(false);
+        localStorage.setItem(Constants.localStorageVars.IS_AUTHENTICATED, true);
+        document.body.className = "hide-background-image";
+        history.push("/dashboard");
       })
-      .catch(ex => {
-        setSnackbarMessage("Possible timeout, double check if you started the expess server")
+      .catch((ex) => {
+        setSnackbarMessage(
+          "Possible timeout, double check if you started the expess server"
+        );
         setSnackbarOpen(true);
-        globalContext.showLoadingOverlay.set(false)
-        setIsLoadingLocally(false)
-      })
-  }
+        globalContext.showLoadingOverlay.set(false);
+        setIsLoadingLocally(false);
+      });
+  };
 
   const handleFormDataChange = (value, field) => {
     setLoginError(false);
@@ -177,7 +178,11 @@ function LoginPage() {
                       onClick={(event) => handleSignInClick(event)}
                       disabled={isLoadingLocally}
                     >
-                      {isLoadingLocally ? <CircularProgress size={25} /> : "Sign In"}
+                      {isLoadingLocally ? (
+                        <CircularProgress size={25} />
+                      ) : (
+                        "Sign In"
+                      )}
                     </Button>
                   </Grid>
                 </form>
@@ -193,16 +198,20 @@ function LoginPage() {
         onClose={() => setSnackbarOpen(false)}
       >
         <Alert severity="error" onClose={() => setSnackbarOpen(false)}>
-         {snackbarMessage}
+          {snackbarMessage}
         </Alert>
       </Snackbar>
 
-      <Menu anchorEl={loaderMenuAnchor} open={Boolean(loaderMenuAnchor)} onClose={()=>setLoaderMenuAnchor(null)}>
+      <Menu
+        anchorEl={loaderMenuAnchor}
+        open={Boolean(loaderMenuAnchor)}
+        onClose={() => setLoaderMenuAnchor(null)}
+      >
         <MenuItem onClick={() => handleLoaderSelection("fullscreen")}>
-                      Fullscreen Loader
+          Fullscreen Loader
         </MenuItem>
         <MenuItem onClick={() => handleLoaderSelection("local")}>
-        Local Loader
+          Local Loader
         </MenuItem>
       </Menu>
     </Fragment>

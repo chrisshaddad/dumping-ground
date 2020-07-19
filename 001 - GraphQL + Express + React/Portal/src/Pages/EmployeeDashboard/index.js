@@ -1,7 +1,11 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import GlobalContext from "../../Contexts/GlobalContext";
 import { Constants, API } from "../../Utils";
-import { PagePaperContainer, CustomTable } from "../../Components";
+import {
+  PagePaperContainer,
+  CustomTable,
+  ConfirmationModal,
+} from "../../Components";
 import {
   Container,
   AccordionDetails,
@@ -19,9 +23,12 @@ import {
   Dialog,
   CircularProgress,
   Button,
+  Snackbar,
 } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import EmployeeCard from "./EmployeeCard";
+import EmployeeFormDialog from "./EmployeeFormDialog";
 
 const views = {
   table: "table",
@@ -58,6 +65,12 @@ function EmployeeDashboard() {
   const [loadingEmployees, setLoadingEmployees] = useState(false);
   const [allEmployees, setEmployees] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
+  const [isEditMode, setEditMode] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [isLoadingAction, setActionLoading] = useState(false);
+  const [successSnacknarOpen, setSuccessSnacknarOpen] = useState(false);
+  const [failedSnacknarOpen, setFailedSnacknarOpen] = useState(false);
+  const [employeeToDeleteId, setEmployeeToDeleteId] = useState(0);
 
   useEffect(() => {
     if (globalContext.currentPage.get !== Constants.pageTags.EMPLOYEE_DASHBOARD)
@@ -95,6 +108,23 @@ function EmployeeDashboard() {
           //todo: add exception handling
           setLoadingEmployees(false);
         });
+  };
+
+  const deleteEmployee = () => {
+    setActionLoading(true);
+    API.deleteEmployee(employeeToDeleteId)
+      .then((res) => {
+        setDeleteModalOpen(false);
+        setActionLoading(false);
+        if (res.success) setSuccessSnacknarOpen(true);
+        else setFailedSnacknarOpen(true);
+      })
+      .catch((ex) => {
+        //todo: add exception handling
+        setActionLoading(false);
+        setDeleteModalOpen(false);
+        setFailedSnacknarOpen(true);
+      });
   };
 
   const renderPageOptions = () => {
@@ -139,7 +169,16 @@ function EmployeeDashboard() {
           <Grid container spacing={2}>
             {allEmployees.map((emp) => (
               <Grid item xs={12} sm={4} md={3}>
-                <EmployeeCard employee={emp} />
+                <EmployeeCard
+                  employee={emp}
+                  onEdit={() => {
+                    alert("Should open edit dialog");
+                  }}
+                  onDelete={() => {
+                    setEmployeeToDeleteId(emp.login.uuid);
+                    setDeleteModalOpen(true);
+                  }}
+                />
               </Grid>
             ))}
           </Grid>
@@ -210,6 +249,35 @@ function EmployeeDashboard() {
         </Grid>
         {viewType === views.table ? rederTableView() : renderCardsView()}
       </Container>
+
+      <ConfirmationModal
+        title="Are you sure you want to delete this employee?"
+        open={deleteModalOpen}
+        description="Deleting this employee will cause him to be logged of all registered devices."
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={() => deleteEmployee()}
+        loading={isLoadingAction}
+      />
+
+      <Snackbar
+        open={successSnacknarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSuccessSnacknarOpen(false)}
+      >
+        <Alert severity="success" onClose={() => setSuccessSnacknarOpen(false)}>
+          Successful Operation
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={failedSnacknarOpen}
+        autoHideDuration={6000}
+        onClose={() => setFailedSnacknarOpen(false)}
+      >
+        <Alert severity="error" onClose={() => setFailedSnacknarOpen(false)}>
+          Operation Failed
+        </Alert>
+      </Snackbar>
     </PagePaperContainer>
   );
 }

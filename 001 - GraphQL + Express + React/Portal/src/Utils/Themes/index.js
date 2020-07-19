@@ -24,6 +24,11 @@ let commonOverrides = {
       paper: {
         zIndex: 10000
       }
+    },
+    MuiDialog: {
+      paper: {
+        zIndex: 10000
+      }
     }
   }
 };
