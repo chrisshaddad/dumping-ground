@@ -40,6 +40,8 @@ const possibleJobPositions = [
   "Administrative",
   "Secretary",
   "Senior Programmer",
+  "Junior Programmer",
+  "Manager",
   "Architect",
 ];
 
@@ -63,7 +65,7 @@ function EmployeeDashboard() {
   const globalContext = useContext(GlobalContext);
   const [viewType, setViewType] = useState("cards");
   const [loadingEmployees, setLoadingEmployees] = useState(false);
-  const [allEmployees, setEmployees] = useState([]);
+  const [allEmployees, setAllEmployees] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [isEditMode, setEditMode] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -71,6 +73,8 @@ function EmployeeDashboard() {
   const [successSnacknarOpen, setSuccessSnacknarOpen] = useState(false);
   const [failedSnacknarOpen, setFailedSnacknarOpen] = useState(false);
   const [employeeToDeleteId, setEmployeeToDeleteId] = useState(0);
+  const [employeeFormOpen, setEmployeeFormOpen] = useState(false);
+  const [employeeToEdit, setEmployeeToEdit] = useState(null);
 
   useEffect(() => {
     if (globalContext.currentPage.get !== Constants.pageTags.EMPLOYEE_DASHBOARD)
@@ -83,11 +87,16 @@ function EmployeeDashboard() {
 
   useEffect(() => {
     setCurrentPage(0);
+    setAllEmployees([]);
   }, [viewType]);
 
   useEffect(() => {
     if (currentPage === 0) fetchEmployees();
   }, [currentPage]);
+
+  useEffect(() => {
+    if (isEditMode) setEmployeeFormOpen(true);
+  }, [isEditMode]);
 
   const fetchEmployees = () => {
     setLoadingEmployees(true);
@@ -97,12 +106,12 @@ function EmployeeDashboard() {
           let employees = response.results;
           employees.forEach((emp) => {
             const jobPosition =
-              possibleJobPositions[Math.floor(Math.random() * 4)];
+              possibleJobPositions[Math.floor(Math.random() * 6)];
             emp.jobPosition = jobPosition;
           });
           setCurrentPage(currentPage + 1);
           setLoadingEmployees(false);
-          setEmployees([...allEmployees, ...employees]);
+          setAllEmployees([...allEmployees, ...employees]);
         })
         .catch((ex) => {
           //todo: add exception handling
@@ -120,10 +129,41 @@ function EmployeeDashboard() {
         else setFailedSnacknarOpen(true);
       })
       .catch((ex) => {
-        //todo: add exception handling
         setActionLoading(false);
         setDeleteModalOpen(false);
         setFailedSnacknarOpen(true);
+      });
+  };
+
+  const handleEmployeeCreation = (formData) => {
+    globalContext.showLoadingOverlay.set(true);
+    API.addEmployee(formData)
+      .then((response) => {
+        globalContext.showLoadingOverlay.set(false);
+        if (response.success) {
+          setSuccessSnacknarOpen(true);
+          setEmployeeFormOpen(false);
+        } else setFailedSnacknarOpen(true);
+      })
+      .catch((ex) => {
+        setFailedSnacknarOpen(true);
+        globalContext.showLoadingOverlay.set(false);
+      });
+  };
+
+  const handleEmployeeUpdate = (formData) => {
+    globalContext.showLoadingOverlay.set(true);
+    API.updateEmployee(formData)
+      .then((response) => {
+        globalContext.showLoadingOverlay.set(false);
+        if (response.success) {
+          setSuccessSnacknarOpen(true);
+          setEmployeeFormOpen(false);
+        } else setFailedSnacknarOpen(true);
+      })
+      .catch((ex) => {
+        setFailedSnacknarOpen(true);
+        globalContext.showLoadingOverlay.set(false);
       });
   };
 
@@ -172,7 +212,8 @@ function EmployeeDashboard() {
                 <EmployeeCard
                   employee={emp}
                   onEdit={() => {
-                    alert("Should open edit dialog");
+                    setEmployeeToEdit(emp);
+                    setEditMode(true);
                   }}
                   onDelete={() => {
                     setEmployeeToDeleteId(emp.login.uuid);
@@ -235,7 +276,7 @@ function EmployeeDashboard() {
     <PagePaperContainer
       title={"Employee Dashboard"}
       addAction={() => {
-        alert("Should Open Add form");
+        setEmployeeFormOpen(true);
       }}
     >
       <Container maxWidth="sm" className={classes.pageOptionsContainer}>
@@ -278,6 +319,18 @@ function EmployeeDashboard() {
           Operation Failed
         </Alert>
       </Snackbar>
+
+      <EmployeeFormDialog
+        onCreate={(formData) => handleEmployeeCreation(formData)}
+        open={employeeFormOpen}
+        isEditMode={isEditMode}
+        employee={employeeToEdit}
+        onClose={() => {
+          setEmployeeFormOpen(false);
+          setEditMode(false);
+        }}
+        onUpdate={(formData) => handleEmployeeUpdate(formData)}
+      />
     </PagePaperContainer>
   );
 }

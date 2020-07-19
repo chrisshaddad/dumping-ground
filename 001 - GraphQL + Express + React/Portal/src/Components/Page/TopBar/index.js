@@ -58,7 +58,7 @@ function TopBar() {
   const [numberOfNotifications, setNotificationAmount] = useState(6);
   const [notificationsLoading, setNotificationsLoading] = useState(true);
   const [notifications, setNotifications] = useState([]);
-  const [notificationsMenuAnchor, setNotificationsMenuOpen] = useState(null);
+  const [notificationsMenuAnchor, setNotificationsMenuAnchor] = useState(null);
   const [sideMenuOpen, setSideMenuOpen] = useState(false);
 
   const fetchNotifications = () => {
@@ -84,7 +84,7 @@ function TopBar() {
   };
 
   const handleSelectNotification = (n) => {
-    notificationsMenuAnchor(null);
+    setNotificationsMenuAnchor(null);
   };
 
   return (
@@ -108,7 +108,7 @@ function TopBar() {
             color="inherit"
             onClick={(event) => {
               fetchNotifications();
-              setNotificationsMenuOpen(event.currentTarget);
+              setNotificationsMenuAnchor(event.currentTarget);
             }}
           >
             <Badge badgeContent={numberOfNotifications} color="secondary">
@@ -124,7 +124,7 @@ function TopBar() {
       <Menu
         anchorEl={notificationsMenuAnchor}
         open={Boolean(notificationsMenuAnchor)}
-        onClose={() => setNotificationsMenuOpen(null)}
+        onClose={() => setNotificationsMenuAnchor(null)}
         PaperProps={{
           className: classes.notificationsPaper,
         }}
