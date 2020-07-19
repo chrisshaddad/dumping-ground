@@ -39,13 +39,15 @@ function SideMenu(props) {
   return (
     <Drawer anchor={"left"} open={props.open} onClose={props.onClose}>
       <List>
-        {menuItems.map((mi) =>
+        {menuItems.map((mi, index) =>
           mi.isDivider ? (
-            <Divider />
+            <Divider 
+              key={`route_sidemenu_${index}`}
+            />
           ) : (
             <ListItem
               button
-              key={mi.route}
+              key={`route_sidemenu_${index}`}
               onClick={() => {
                 history.push(mi.route);
                 props.onClose();
