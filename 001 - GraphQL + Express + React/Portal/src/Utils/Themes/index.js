@@ -14,23 +14,23 @@ let commonOverrides = {
       '"Segoe UI Symbol"',
     ].join(","),
   },
-  overrides:{
-    MuiBackdrop:{
-      root:{
-        zIndex: 9999
-      }
+  overrides: {
+    MuiBackdrop: {
+      root: {
+        zIndex: 9999,
+      },
     },
     MuiDrawer: {
       paper: {
-        zIndex: 10000
-      }
+        zIndex: 10000,
+      },
     },
     MuiDialog: {
       paper: {
-        zIndex: 10000
-      }
-    }
-  }
+        zIndex: 10000,
+      },
+    },
+  },
 };
 
 export default {
@@ -39,7 +39,6 @@ export default {
     palette: {
       type: "light",
     },
-
   },
   dark: {
     ...commonOverrides,

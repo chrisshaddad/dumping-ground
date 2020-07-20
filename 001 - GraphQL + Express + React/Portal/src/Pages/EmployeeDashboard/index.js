@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import GlobalContext from "../../Contexts/GlobalContext";
 import { Constants, API } from "../../Utils";
 import {
@@ -18,10 +18,7 @@ import {
   Typography,
   FormControl,
   FormLabel,
-  Checkbox,
   makeStyles,
-  Dialog,
-  CircularProgress,
   Button,
   Snackbar,
 } from "@material-ui/core";
@@ -51,6 +48,7 @@ const employeesPerPage = 12;
 const useStyles = makeStyles((theme) => ({
   employeesTitle: {
     color: theme.palette.primary.main,
+    marginBottom: 10,
   },
   pageOptionsContainer: {
     marginBottom: 10,
@@ -63,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
 function EmployeeDashboard() {
   const classes = useStyles();
   const globalContext = useContext(GlobalContext);
-  const [viewType, setViewType] = useState("cards");
+  const [viewType, setViewType] = useState("table");
   const [loadingEmployees, setLoadingEmployees] = useState(false);
   const [allEmployees, setAllEmployees] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
@@ -98,10 +96,10 @@ function EmployeeDashboard() {
     if (isEditMode) setEmployeeFormOpen(true);
   }, [isEditMode]);
 
-  const fetchEmployees = () => {
+  const fetchEmployees = (page = currentPage) => {
     setLoadingEmployees(true);
     if (!loadingEmployees)
-      API.getEmployees(currentPage, employeesPerPage)
+      API.getEmployees(page, employeesPerPage)
         .then((response) => {
           let employees = response.results;
           employees.forEach((emp) => {
@@ -109,7 +107,7 @@ function EmployeeDashboard() {
               possibleJobPositions[Math.floor(Math.random() * 6)];
             emp.jobPosition = jobPosition;
           });
-          setCurrentPage(currentPage + 1);
+          setCurrentPage(page + 1);
           setLoadingEmployees(false);
           setAllEmployees([...allEmployees, ...employees]);
         })
@@ -258,16 +256,60 @@ function EmployeeDashboard() {
     );
   };
 
-  const rederTableView = () => {
+  const renderTableView = () => {
     return (
       <CustomTable
-        data={[]}
-        dataMapper={[]}
-        onShowMore={() => {
-          alert("Show More Data");
+        data={allEmployees}
+        dataMapper={[
+          {
+            column: "Name",
+            renderValue: (emp) => emp.name.first,
+            searchKey: (emp) => emp.name.first,
+          },
+          {
+            column: "Last Name",
+            renderValue: (emp) => emp.name.last,
+            searchKey: (emp) => emp.name.first,
+          },
+          {
+            column: "Job Post",
+            renderValue: (emp) => emp.jobPosition,
+            searchKey: (emp) => emp.jobPosition,
+          },
+          {
+            column: "Email",
+            renderValue: (emp) => emp.email,
+            searchKey: (emp) => emp.email,
+          },
+          {
+            column: "Phone",
+            renderValue: (emp) => emp.phone,
+            searchKey: (emp) => emp.phone,
+          },
+        ]}
+        onShowMore={(pageIndex) => {
+          fetchEmployees(pageIndex);
         }}
-        loading={true}
-        pageSize={10}
+        loading={loadingEmployees}
+        pageSize={employeesPerPage}
+        actions={[
+          {
+            icon: "edit",
+            action: (emp) => {
+              setEmployeeToEdit(emp);
+              setEditMode(true);
+            },
+            tooltip: "Edit Employee",
+          },
+          {
+            icon: "delete",
+            action: (emp) => {
+              setEmployeeToDeleteId(emp.login.uuid);
+              setDeleteModalOpen(true);
+            },
+            tooltip: "Delete Employee",
+          },
+        ]}
       />
     );
   };
@@ -288,7 +330,7 @@ function EmployeeDashboard() {
             Employees
           </Typography>
         </Grid>
-        {viewType === views.table ? rederTableView() : renderCardsView()}
+        {viewType === views.table ? renderTableView() : renderCardsView()}
       </Container>
 
       <ConfirmationModal

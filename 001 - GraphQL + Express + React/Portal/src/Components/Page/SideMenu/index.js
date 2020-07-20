@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import {
   Drawer,
   List,
@@ -41,9 +41,7 @@ function SideMenu(props) {
       <List>
         {menuItems.map((mi, index) =>
           mi.isDivider ? (
-            <Divider 
-              key={`route_sidemenu_${index}`}
-            />
+            <Divider key={`route_sidemenu_${index}`} />
           ) : (
             <ListItem
               button

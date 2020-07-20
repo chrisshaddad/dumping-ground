@@ -1,21 +1,20 @@
-.loginPageContainer{
-    height: 100vh;
+.loginPageContainer {
+  height: 100vh;
 }
 
-.loginDialogContainer{
-    height: 100%;
+.loginDialogContainer {
+  height: 100%;
 }
 
 .loginDialog {
-    padding: 15px 10px;
-    width: 100%;
+  padding: 15px 10px;
+  width: 100%;
 }
 
-.loginForm{
-    width: 100%
+.loginForm {
+  width: 100%;
 }
 
-.loginButtonContainer{
-    text-align: right;
+.loginButtonContainer {
+  text-align: right;
 }
-

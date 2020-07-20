@@ -12,7 +12,7 @@ import {
   FormControlLabel,
   FormLabel,
   Grid,
-  FormControl
+  FormControl,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import GlobalContext from "../../Contexts/GlobalContext";

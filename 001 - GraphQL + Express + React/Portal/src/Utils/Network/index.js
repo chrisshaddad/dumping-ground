@@ -1,8 +1,6 @@
 import Constants from "../Constants";
 import testingData from "./testingData";
 
-const apiLinks = Constants.apiLinks;
-
 class API {
   //Centrilised network calls in case we need to do some global handling of messages received from the server
   post(url, body = {}) {
@@ -16,11 +14,11 @@ class API {
     }).then((response) => response.json());
   }
 
-  get(url, params = {}){
-    const urlObj = new URL(url)
+  get(url, params = {}) {
+    const urlObj = new URL(url);
     urlObj.search = new URLSearchParams(params).toString();
 
-    return fetch(url, {
+    return fetch(urlObj, {
       method: "GET",
       credentials: "same-origin",
       headers: {
@@ -50,39 +48,34 @@ class API {
   }
 
   getEmployees(pageNumber, pageSize) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        return resolve(testingData.getEmployeesResult);
-      }, 3500);
-    });
     //Third party API request
-    const url = Constants.apiLinks.RANDOM_USER_LINK
+    const url = Constants.apiLinks.RANDOM_USER_LINK;
 
-    const params = { 
+    const params = {
       page: pageNumber,
       results: pageSize,
       seed: "CHALLENGE",
-      inc:"name,location,phone,picture,email,id,login",
-      nat:"us,fr,ca"
-     }
+      inc: "name,location,phone,picture,email,id,login",
+      nat: "us,fr,ca",
+    };
 
-     return this.get(url, params)
+    return this.get(url, params);
   }
 
-  addEmployee(employeeToAdd){
+  addEmployee(employeeToAdd) {
     const fullUrl = `${Constants.apiLinks.GRAPHQL_SERVER_LINK}/employees/add`;
     return this.post(fullUrl, employeeToAdd);
   }
 
-  updateEmployee(employeeToUpdate){
+  updateEmployee(employeeToUpdate) {
     const fullUrl = `${Constants.apiLinks.GRAPHQL_SERVER_LINK}/employees/update`;
     return this.post(fullUrl, employeeToUpdate);
   }
 
-  deleteEmployee(id){
+  deleteEmployee(id) {
     const fullUrl = `${Constants.apiLinks.GRAPHQL_SERVER_LINK}/employees/delete`;
     return this.post(fullUrl, {
-      id
+      id,
     });
   }
 }

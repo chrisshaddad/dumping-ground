@@ -1,7 +1,6 @@
 import React, { Fragment, useState } from "react";
 import {
   Card,
-  CardActions,
   CardContent,
   CardMedia,
   CardHeader,
@@ -14,7 +13,6 @@ import {
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import PropTypes from "prop-types";
-import { SignalCellularNullOutlined } from "@material-ui/icons";
 import Skeleton from "@material-ui/lab/Skeleton";
 
 const useStyles = makeStyles((theme) => ({

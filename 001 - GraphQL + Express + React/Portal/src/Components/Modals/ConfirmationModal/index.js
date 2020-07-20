@@ -8,17 +8,17 @@ import {
   DialogActions,
   Button,
   CircularProgress,
-  makeStyles
+  makeStyles,
 } from "@material-ui/core";
 
-const useStyles = makeStyles(theme => ({
-    loadingContainer:{
-        height: 170,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center"
-    }
-}))
+const useStyles = makeStyles((theme) => ({
+  loadingContainer: {
+    height: 170,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+}));
 
 function ConfirmationModal(props) {
   const {
@@ -31,7 +31,7 @@ function ConfirmationModal(props) {
     additionalContent,
   } = props;
 
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <Dialog open={open} fullWidth={true} maxWidth="sm">

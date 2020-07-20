@@ -17,16 +17,14 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import { LockOutlined, ReportProblemOutlined } from "@material-ui/icons";
-import { lime } from "@material-ui/core/colors";
 import { CustomTextField } from "../../Components";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
 import API from "../../Utils/Network";
 
 import styles from "./styles.module.css";
-import { object } from "prop-types";
 
-//Using multiple implementation of styles just for showcasing :)
+//Using multiple implementation of styles just for showcasing
 //Focusing on makeStyles as it is the main method of styling for material ui
 //Ofcourse all styles can be exported to different files in case we need more modularity
 const useStyles = makeStyles((theme) => ({

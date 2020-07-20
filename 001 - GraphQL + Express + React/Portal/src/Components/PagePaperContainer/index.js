@@ -6,7 +6,7 @@ import {
   Typography,
   Grid,
 } from "@material-ui/core";
-import { ArrowBack, plu, Add } from "@material-ui/icons";
+import { ArrowBack, Add } from "@material-ui/icons";
 import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
@@ -29,9 +29,9 @@ const useStyles = makeStyles((theme) => ({
   titleContainer: {
     padding: "10px 10px 0px 10px",
   },
-  addActionContainer:{
-    marginLeft: "auto"
-  }
+  addActionContainer: {
+    marginLeft: "auto",
+  },
 }));
 
 function PagePaperContainer(props) {

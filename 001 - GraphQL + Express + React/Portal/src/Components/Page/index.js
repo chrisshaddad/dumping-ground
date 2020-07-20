@@ -1,15 +1,14 @@
 import React, { Fragment, useContext } from "react";
-import GlobalContext from "../../Contexts/GlobalContext"
+import GlobalContext from "../../Contexts/GlobalContext";
 import { Switch, Route, Redirect } from "react-router-dom";
 import TopBar from "./TopBar";
 import { PrivateRoute } from "../";
 import {
   Login as LoginPage,
   EmployeeDashboard,
-  PortalSettings
+  PortalSettings,
 } from "../../Pages";
 import { Constants } from "../../Utils";
-import { Paper } from "@material-ui/core";
 
 function Page(props) {
   const globalContext = useContext(GlobalContext);
@@ -28,10 +27,6 @@ function Page(props) {
         <PrivateRoute exact path="/settings">
           <PortalSettings />
         </PrivateRoute>
-        <Route exact path="/asd">
-          {/*Quick accessing ui features*/}
-          <EmployeeDashboard />
-        </Route>
         <Route exact path="*">
           <Redirect to="/" />
         </Route>

@@ -26,7 +26,7 @@ import { CustomTextField, CustomSelect } from "../../../Components";
 import GlobalContext from "../../../Contexts/GlobalContext";
 import { Constants } from "../../../Utils";
 
-const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; //eslint-disable-line
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -69,7 +69,7 @@ function EmployeeFormDialog(props) {
   const inputFile = useRef(null);
 
   useEffect(() => {
-    if (isEditMode){ 
+    if (isEditMode) {
       let formData = {
         firstName: employee.name.first,
         lastName: employee.name.last,
@@ -78,9 +78,8 @@ function EmployeeFormDialog(props) {
         phone: employee.phone,
         country: employee.nat.toLowerCase(),
         city: employee.location.city,
-        city: employee.location.city,
-        profilePicture: employee.picture.medium
-      }
+        profilePicture: employee.picture.medium,
+      };
       setFormData(formData);
     }
   }, [isEditMode]);
