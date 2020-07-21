@@ -55,7 +55,7 @@ class API {
       page: pageNumber,
       results: pageSize,
       seed: "CHALLENGE",
-      inc: "name,location,phone,picture,email,id,login",
+      inc: "name,location,phone,picture,email,id,login,nat",
       nat: "us,fr,ca",
     };
 
