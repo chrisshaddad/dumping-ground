@@ -59,8 +59,8 @@ function LoginPage() {
 
   const handleSignInClick = (event) => {
     if (
-      formData.username.toLowerCase() !== "admin" ||
-      formData.password.toLowerCase() !== "admin"
+        (!formData.username || formData.username.toLowerCase() !== "admin") || 
+        (!formData.password || formData.password.toLowerCase() !== "admin")
     ) {
       setLoginError(true);
       setSnackbarMessage("Invalid Credentials!");
