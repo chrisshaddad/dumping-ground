@@ -5,3 +5,7 @@ This is where I dump everything I test/try out
 ¯\(°_o)/¯ <- *this guy doesn't know*
 
 Readme Revisions needed: 001-002
+
+## Useful things to have installed
+1. [Node](https://nodejs.org/)
+2. [VSCode](https://code.visualstudio.com/)

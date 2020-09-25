@@ -1,0 +1,9 @@
+{
+  "name": "typescript-babysteps",
+  "version": "1.0.0",
+  "main": "app.js",
+  "license": "MIT",
+  "devDependencies": {
+    "lite-server": "^2.5.4"
+  }
+}
